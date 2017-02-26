@@ -6,24 +6,21 @@
 		<meta charset="utf-8" />
 		<title>签名</title>
 		<style type="text/css">
-			* {margin:0;padding:0;box-sizing:border-box;}
+			* {margin:0;padding:0;}
 			html, body {width:100%;height:100%;}
-			body {margin:0 auto;max-width:750px;padding:15px;background-color:#fafafa;}
+			body {margin:0 auto;max-width:750px;background-color:#fafafa;}
 			.canvas-div {margin-top:15px;background-color:#fff;border:1px dotted #ccc;}
-			.canvas-div canvas {width:100%;height:150px;}
-			.btn-div {margin-top:15px;}
+			.canvas-div canvas {width:100%;height:150px;border:1px solid red;}
+			.btn-div {margin:15px;}
 			.btn-div button {width:80px;height:40px;color:#fff;background-color:#337ab7;border:none;}
 			.btn-div .btn-danger {background-color:#d9534f;}
-			.str-div {margin-top:15px;}
+			.str-div {margin:15px;}
 			.str-div p {font-size:12px;color:#666;word-break:break-all;}
 		</style>
 	</head>
 	
 	<body>
-		<h3>签名：</h3>
-		<div class="canvas-div">
-			<canvas id="signCanvas"></canvas>
-		</div>
+		<canvas id="signCanvas" width="375px" height="250px" style="background-color:#fff;border-bottom:1px dotted #ccc;"></canvas>
 		
 		<div class="btn-div">
 			<button id="picBtn">生成图片</button>
@@ -43,6 +40,7 @@
 			var endX;
 			var endY;
 			cv.addEventListener('touchstart', function(e) {
+				e.preventDefault();
 				var firstTouch = e.targetTouches[0];
 				if(firstTouch) {
 					startX = firstTouch.pageX;
@@ -51,12 +49,13 @@
 				}
 			});
 			cv.addEventListener('touchmove', function(e) {
+				e.preventDefault();
 				var moveTouch = e.targetTouches[0];
 				if(moveTouch){
 					endX = moveTouch.pageX;
 					endY = moveTouch.pageY;
-					cxt.strokeStyle = "rgba(0,0,0,0.5)"
-					cxt.lineWidth = 8;
+					cxt.strokeStyle = "rgba(0,0,0,0.5)";
+					cxt.lineWidth = 5;
 					cxt.lineTo(endX, endY);
 					cxt.stroke();
 				}
