@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta charset="utf-8" />
+		<title>签名</title>
+		<style type="text/css">
+			* {margin:0;padding:0;box-sizing:border-box;}
+			html, body {width:100%;height:100%;}
+			body {margin:0 auto;max-width:750px;padding:15px;background-color:#fafafa;}
+			.canvas-div {margin-top:15px;background-color:#fff;border:1px dotted #ccc;}
+			.canvas-div canvas {width:100%;height:150px;}
+			.btn-div {margin-top:15px;}
+			.btn-div button {width:80px;height:40px;color:#fff;background-color:#337ab7;border:none;}
+			.btn-div .btn-danger {background-color:#d9534f;}
+			.str-div {margin-top:15px;}
+			.str-div p {font-size:12px;color:#666;word-break:break-all;}
+		</style>
+	</head>
+	
+	<body>
+		<h3>签名：</h3>
+		<div class="canvas-div">
+			<canvas id="signCanvas"></canvas>
+		</div>
+		
+		<div class="btn-div">
+			<button id="picBtn">生成图片</button>
+			<button class='btn-danger' id="cancelBtn">重签</button>
+		</div>
+		
+		<div class="str-div">
+			<p id="picStr"></p>
+		</div>
+		
+		<script type="text/javascript">
+			//绘图
+			var cv = document.getElementById('signCanvas');
+			var cxt = cv.getContext('2d');
+			var startX;
+			var startY;
+			var endX;
+			var endY;
+			cv.addEventListener('touchstart', function(e) {
+				var firstTouch = e.targetTouches[0];
+				if(firstTouch) {
+					startX = firstTouch.pageX;
+					startY = firstTouch.pageY;
+					cxt.moveTo(startX, startY);
+				}
+			});
+			cv.addEventListener('touchmove', function(e) {
+				var moveTouch = e.targetTouches[0];
+				if(moveTouch){
+					endX = moveTouch.pageX;
+					endY = moveTouch.pageY;
+					cxt.strokeStyle = "rgba(0,0,0,0.5)"
+					cxt.lineWidth = 8;
+					cxt.lineTo(endX, endY);
+					cxt.stroke();
+				}
+			});
+			
+			//转化为图片Base64编码
+			var picBtn = document.getElementById("picBtn");
+			var picStr = document.getElementById("picStr");
+			picBtn.addEventListener("click", function(e) {
+				var base64Str = cv.toDataURL("image/png");
+				picStr.innerHTML = base64Str;
+			});
+			
+			//重签
+			var cancelBtn = document.getElementById("cancelBtn");
+			cancelBtn.addEventListener("click", function(e) {
+				cv.height = 150; //重置画布宽高时，内容会被清空
+				picStr.innerHTML = "";
+			});
+		</script>
+	</body>
+</html>
